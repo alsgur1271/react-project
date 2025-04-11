@@ -47,7 +47,10 @@ connectDB();
 
 // 회원가입 API
 app.post('/api/signup', (req, res) => {
-  const { id, name, age, pwd } = req.body;
+    console.log("요청 도착!"); // ✅ 여기에 찍어야 실행됨
+  console.log("받은 데이터:", req.body);
+  const { id, name, age, pwd, teacher } = req.body;
+  console.log("👉 받은 teacher 값:", req.body.teacher);
 
   if (!id || !name || !pwd) {
       return res.status(400).json({ message: "필수 입력 값이 없습니다." });
@@ -55,8 +58,8 @@ app.post('/api/signup', (req, res) => {
 
   const hashedPwd = bcrypt.hashSync(pwd, 10);  // 비밀번호 해싱
 
-  const query = 'INSERT INTO user (id, name, age, pwd) VALUES (?, ?, ?, ?)';
-  db.query(query, [id, name, age || null, hashedPwd], (err, result) => {
+  const query = 'INSERT INTO user (id, name, age, pwd, teacher) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [id, name, age || null, hashedPwd, teacher ? 1 : 0], (err, result) => {
       if (err) {
           console.error("회원가입 오류:", err); 
           return res.status(500).json({ message: 'Database error', error: err });
@@ -201,6 +204,31 @@ app.post('/api/voice', upload.single('audio'), async (req, res) => {
         res.status(500).json({ message: '음성 인식 실패', error: error.message });
     }
 });
+
+app.get('/api/teacher/:id', (req, res) => {
+    const teacherId = req.params.id;
+  
+    const query = 'SELECT * FROM user WHERE id = ? AND teacher = 1';
+    db.query(query, [teacherId], (err, results) => {
+      if (err) {
+        console.error("선생님 정보 가져오기 오류:", err);
+        return res.status(500).json({ message: "DB 오류" });
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).json({ message: "선생님을 찾을 수 없습니다." });
+      }
+  
+      const teacherData = {
+        name: results[0].name,
+        intro: "안녕하세요! 열심히 가르치는 선생님입니다 👩‍🏫", // intro는 DB에 없으면 하드코딩
+        posts: [], // 나중에 자료 올리면 연결
+      };
+  
+      res.json(teacherData);
+    });
+  });
+  
 
 
 // 서버 실행

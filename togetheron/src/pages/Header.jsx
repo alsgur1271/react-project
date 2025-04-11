@@ -53,7 +53,7 @@ const Header = () => {
             <Link to="#" onClick={handleLogout} className="my-page-link">로그아웃</Link>
           </>
         ) : (
-          <Link to="/" className="homelogin-button-link">로그인</Link>
+          <Link to="/Login" className="homelogin-button-link">로그인</Link>
         )}
       </div>
     </header>

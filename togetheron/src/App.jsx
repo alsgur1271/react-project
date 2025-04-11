@@ -5,10 +5,13 @@ import Login from "./pages/Login";  //라우팅
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Header from './pages/Header';
+import TeacherProfile from './pages/TeacherProfile';
+
+
 
 const AppLayout = () => {
   const location = useLocation();
-  const noHeaderRoutes = ['/', '/Signup'];
+  const noHeaderRoutes = ['/Login', '/Signup'];
 
   const showHeader = !noHeaderRoutes.includes(location.pathname);
 
@@ -16,9 +19,10 @@ const AppLayout = () => {
     <>
       {showHeader && <Header />}
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route path="/Signup" element={<Signup />} />
-        <Route path="/Home" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/teacher/:teacherId" element={<TeacherProfile />} />
       </Routes>
     </>
   );
