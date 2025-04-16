@@ -10,6 +10,57 @@ from dotenv import load_dotenv
 import os
 import time
  
+
+async def get_user_by_id(conn, user_id: str):
+    query = "SELECT * FROM users WHERE id = :user_id"
+    return await conn.fetch_one(query, {"user_id": user_id})
+
+
+async def register_user(conn, user_id: str, hashed_password: str):
+    query = """
+    INSERT INTO users (id, hashed_password)
+    VALUES (:user_id, :hashed_password)
+    """
+    await conn.execute(query, {
+        "user_id": user_id,
+        "hashed_password": hashed_password
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async def get_user_by_email(conn: Connection, email: str) -> UserData:
     try:
         query = f"""

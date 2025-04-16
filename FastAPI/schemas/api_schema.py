@@ -15,8 +15,7 @@ class LoginInput(BaseModel):
 
 #유저 JSON
 class UserRegisterRequest(BaseModel):
-    name: str
-    email: EmailStr
+    id: str
     password: str
 
 
