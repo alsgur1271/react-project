@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 class UserData(BaseModel):
     id: int
@@ -12,5 +12,11 @@ class UserDataPASS(UserData):
 class LoginInput(BaseModel):
     id: str
     pwd: str
+
+#유저 JSON
+class UserRegisterRequest(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
 
 

@@ -10,40 +10,76 @@ from schemas.blog_schema import BlogInput
 
 # router 생성
 router = APIRouter(prefix="/blogs", tags=["blogs"])
-# jinja2 Template 엔진 생성
-templates = Jinja2Templates(directory="templates")
 
-@router.get("/")
-async def get_all_blogs(request: Request, conn: Connection = Depends(context_get_conn)
-                        , session_user = Depends(auth_svc.get_session_user_opt)):
+@router.get("/blogs")
+async def get_all_blogs_json(
+    conn: Connection = Depends(context_get_conn),
+    session_user = Depends(auth_svc.get_session_user_opt)
+):
     all_blogs = await blog_svc.get_all_blogs(conn)
-    print("session_user:", session_user)
     
-    
-    return templates.TemplateResponse(
-        request = request,
-        name = "index.html",
-        context = {"all_blogs": all_blogs,
-                   "session_user": session_user}
-    )
-    
+    return JSONResponse(content={
+        "blogs": all_blogs,
+        "session_user": session_user
+    })
+
 @router.get("/show/{id}")
-async def get_blog_by_id(request: Request, id: int,
-                   conn: Connection = Depends(context_get_conn),
-                   session_user = Depends(auth_svc.get_session_user_opt)):
+async def get_blog_by_id_json(
+    id: int,
+    conn: Connection = Depends(context_get_conn),
+    session_user = Depends(auth_svc.get_session_user_opt)
+):
     blog = await blog_svc.get_blog_by_id(conn, id)
+    
+    # content 포맷은 프론트에서 처리할 수도 있으므로, 그대로 보내거나 <br> 처리함
     blog.content = util.newline_to_br(blog.content)
 
-    is_valid_auth = auth_svc.check_valid_auth(session_user, 
-                                              blog_author_id=blog.author_id, 
-                                              blog_email=blog.email)
+    is_valid_auth = auth_svc.check_valid_auth(
+        session_user,
+        blog_author_id=blog.author_id,
+        blog_email=blog.email
+    )
 
-    return templates.TemplateResponse(
-        request = request,
-        name="show_blog.html",
-        context = {"blog": blog,
-                   "session_user": session_user,
-                   "is_valid_auth": is_valid_auth})
+    # 블로그 객체를 dict로 변환해야 JSON 직렬화 가능
+    blog_dict = blog.model_dump() if hasattr(blog, "model_dump") else blog.__dict__
+
+    return JSONResponse(content={
+        "blog": blog_dict,
+        "session_user": session_user,
+        "is_valid_auth": is_valid_auth
+    })
+
+# @router.get("/")
+# async def get_all_blogs(request: Request, conn: Connection = Depends(context_get_conn)
+#                         , session_user = Depends(auth_svc.get_session_user_opt)):
+#     all_blogs = await blog_svc.get_all_blogs(conn)
+#     print("session_user:", session_user)
+    
+    
+#     return templates.TemplateResponse(
+#         request = request,
+#         name = "index.html",
+#         context = {"all_blogs": all_blogs,
+#                    "session_user": session_user}
+#     )
+    
+# @router.get("/show/{id}")
+# async def get_blog_by_id(request: Request, id: int,
+#                    conn: Connection = Depends(context_get_conn),
+#                    session_user = Depends(auth_svc.get_session_user_opt)):
+#     blog = await blog_svc.get_blog_by_id(conn, id)
+#     blog.content = util.newline_to_br(blog.content)
+
+#     is_valid_auth = auth_svc.check_valid_auth(session_user, 
+#                                               blog_author_id=blog.author_id, 
+#                                               blog_email=blog.email)
+
+#     return templates.TemplateResponse(
+#         request = request,
+#         name="show_blog.html",
+#         context = {"blog": blog,
+#                    "session_user": session_user,
+#                    "is_valid_auth": is_valid_auth})
  
 @router.get("/new")
 async def create_blog_ui(request: Request
