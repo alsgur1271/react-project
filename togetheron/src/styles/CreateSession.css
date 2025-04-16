@@ -1,0 +1,462 @@
+.create-session-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-top: 20px;
+  }
+  
+  .create-session-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .create-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .create-btn:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  .cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .quick-test-section {
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #4CAF50;
+  }
+  
+  .quick-test-section h3 {
+    margin-top: 0;
+    color: #2e7d32;
+  }
+  
+  .start-now-btn {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .start-now-btn:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .create-session-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  
+  .create-session-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="datetime-local"],
+  .form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="datetime-local"]:focus,
+  .form-group textarea:focus {
+    border-color: #2196f3;
+    outline: none;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .student-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    min-height: 150px;
+  }
+  
+  .selected-students {
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .selected-students p {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .selected-students ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #666;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .form-actions div {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .cancel-btn, .create-btn, .start-now-btn {
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+  }
+  
+  .cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  .create-btn {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .start-now-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .create-btn:hover {
+    background-color: #1976d2;
+  }
+  
+  .start-now-btn:hover {
+    background-color: #3d8b40;
+  }
+  
+  .create-btn:disabled, .start-now-btn:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-actions div {
+      width: 100%;
+    }
+    
+    .form-actions button {
+      flex: 1;
+    }
+  }
+
+  .create-session-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+  
+  .create-session-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="datetime-local"],
+  .form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="datetime-local"]:focus,
+  .form-group textarea:focus {
+    border-color: #2196f3;
+    outline: none;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .student-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    min-height: 150px;
+    width: 100%;
+  }
+  
+  .selected-students {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .selected-students p {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .selected-students ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #666;
+  }
+  
+  .selected-students .no-student {
+    color: #999;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  .no-students-message {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    color: #666;
+    text-align: center;
+    font-style: italic;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .form-actions div {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .cancel-btn, .create-btn, .start-now-btn {
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+  }
+  
+  .cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  .create-btn {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .start-now-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .create-btn:hover {
+    background-color: #1976d2;
+  }
+  
+  .start-now-btn:hover {
+    background-color: #3d8b40;
+  }
+  
+  .create-btn:disabled, .start-now-btn:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  .loading-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .loading-container .loading-spinner {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .debug-info {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+  
+  .debug-info h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .debug-info h4 {
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .debug-info pre {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    overflow: auto;
+    max-height: 200px;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-actions div {
+      width: 100%;
+    }
+    
+    .form-actions button {
+      flex: 1;
+    }
+  }
