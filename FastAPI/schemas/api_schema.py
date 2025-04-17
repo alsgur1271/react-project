@@ -10,8 +10,8 @@ class UserDataPASS(UserData):
 
 ##React랑 연결하려고 만든 스키마마
 class LoginInput(BaseModel):
-    id: str
-    pwd: str
+    username: str
+    password: str
 
 #유저 JSON
 class UserRegisterRequest(BaseModel):

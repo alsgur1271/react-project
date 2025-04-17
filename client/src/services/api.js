@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = process.env.NODE_ENV === 'production' 
   ? '/api' 
-  : 'http://localhost:8080/api';
+  : 'http://192.168.0.7:8000';
 
 // axios 인스턴스 생성
 const api = axios.create({

@@ -1,4 +1,5 @@
 from fastapi import Request, status
+from databases import Database
 from fastapi.exceptions import HTTPException
 from schemas.auth_schema import UserData, UserDataPASS
 from schemas.blog_schema import BlogData
@@ -11,9 +12,16 @@ import os
 import time
  
 
+#React용 및 DB연결에 맞게 SQLALchemy방식으로 변경함
 async def get_user_by_id(conn, user_id: str):
-    query = "SELECT * FROM users WHERE id = :user_id"
-    return await conn.fetch_one(query, {"user_id": user_id})
+    query = text("SELECT * FROM users WHERE id = :user_id")
+    result = await conn.execute(query, {"user_id": user_id})
+    row = result.mappings().first()  # dict처럼 접근 가능
+    return row
+
+# async def get_user_by_id(conn, user_id: str):
+#     query = "SELECT * FROM users WHERE id = :user_id"
+#     return await conn.fetch_one(query, {"user_id": user_id})
 
 
 async def register_user(conn, user_id: str, hashed_password: str):

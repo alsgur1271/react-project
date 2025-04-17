@@ -32,7 +32,7 @@ async def login(request: Request,
                 login_input: LoginInput,
                 conn: Connection = Depends(context_get_conn)):
     
-    userpass = await auth_svc.get_userpass_by_id(conn=conn, user_id=login_input.id)
+    userpass = await auth_svc.get_user_by_id(conn=conn, user_id=login_input.username)
     if userpass is None:
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
