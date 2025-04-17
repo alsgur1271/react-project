@@ -16,7 +16,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 #미들웨어 추가함수
 app.add_middleware(CORSMiddleware, 
-                   allow_origins=["*"],
+                   allow_origins=["http://localhost:3000"],
                    allow_methods=["*"],
                    allow_headers=["*"],
                    allow_credentials=True,

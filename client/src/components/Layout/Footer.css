@@ -1,0 +1,97 @@
+.main-footer {
+    background-color: #333;
+    color: #fff;
+    padding: 40px 0 20px;
+    margin-top: auto; /* 푸터를 항상 페이지 하단에 고정 */
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+  }
+  
+  .footer-section h3 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  .footer-section p {
+    margin: 8px 0;
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .copyright {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-links a {
+    color: #bbb;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: #4CAF50;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #bbb;
+    transition: all 0.3s;
+  }
+  
+  .social-links a:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  
+    .footer-section {
+      text-align: center;
+    }
+  
+    .social-links {
+      justify-content: center;
+    }
+  }

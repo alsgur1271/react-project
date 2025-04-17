@@ -1,0 +1,121 @@
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+  }
+  
+  .admin-panel {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .admin-panel h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .teacher-select, .student-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  .student-select {
+    height: 250px;
+  }
+  
+  .selected-teacher-info {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  
+  .selected-teacher-info h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .selected-teacher-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .assigned-students-info {
+    margin-top: 20px;
+  }
+  
+  .assigned-students-info h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .assigned-student-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .assigned-student-list li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .assigned-student-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .empty-selection-message {
+    padding: 40px 0;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+  
+  .save-assignment-btn {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .save-assignment-btn:hover {
+    background-color: #3d8b40;
+  }
+  
+  .save-assignment-btn:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 992px) {
+    .admin-grid {
+      grid-template-columns: 1fr;
+    }
+  }

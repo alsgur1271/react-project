@@ -81,15 +81,15 @@ async def get_blog_by_id_json(
 #                    "session_user": session_user,
 #                    "is_valid_auth": is_valid_auth})
  
-@router.get("/new")
-async def create_blog_ui(request: Request
-                         , session_user = Depends(auth_svc.get_session_user_prt)):
+# @router.get("/new")
+# async def create_blog_ui(request: Request
+#                          , session_user = Depends(auth_svc.get_session_user_prt)):
     
-    return templates.TemplateResponse(
-        request = request,
-        name = "new_blog.html",
-        context = {"session_user": session_user}
-    )
+#     return templates.TemplateResponse(
+#         request = request,
+#         name = "new_blog.html",
+#         context = {"session_user": session_user}
+#     )
 
 @router.post("/new")
 async def create_blog(request: Request
@@ -116,25 +116,25 @@ async def create_blog(request: Request
     return RedirectResponse("/blogs", status_code=status.HTTP_302_FOUND)
     
 
-@router.get("/modify/{id}")
-async def update_blog_ui(request: Request, id: int, 
-                         conn = Depends(context_get_conn),
-                         session_user = Depends(auth_svc.get_session_user_prt)
-                         ):
-    blog = await blog_svc.get_blog_by_id(conn, id=id)
-    is_valid_auth = auth_svc.check_valid_auth(session_user, 
-                                              blog_author_id=blog.author_id, 
-                                              blog_email=blog.email)
-    if not is_valid_auth:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="해당 서비스는 권한이 없습니다")
+# @router.get("/modify/{id}")
+# async def update_blog_ui(request: Request, id: int, 
+#                          conn = Depends(context_get_conn),
+#                          session_user = Depends(auth_svc.get_session_user_prt)
+#                          ):
+#     blog = await blog_svc.get_blog_by_id(conn, id=id)
+#     is_valid_auth = auth_svc.check_valid_auth(session_user, 
+#                                               blog_author_id=blog.author_id, 
+#                                               blog_email=blog.email)
+#     if not is_valid_auth:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+#                             detail="해당 서비스는 권한이 없습니다")
     
-    return templates.TemplateResponse(
-        request = request,
-        name="modify_blog.html",
-        context = {"blog": blog,
-                   "session_user": session_user}
-    )
+#     return templates.TemplateResponse(
+#         request = request,
+#         name="modify_blog.html",
+#         context = {"blog": blog,
+#                    "session_user": session_user}
+#     )
     
 @router.put("/modify/{id}")
 async def update_blog(request: Request, id: int

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <rect width="40" height="40" rx="8" ry="8" x="10" y="10" fill="#4CAF50" />
+  <text x="60" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#333333">Together</text>
+  <text x="165" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#4CAF50">On</text>
+  <text x="22" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white">T</text>
+</svg>

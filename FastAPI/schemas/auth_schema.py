@@ -8,5 +8,8 @@ class UserData(BaseModel):
 class UserDataPASS(UserData):
     hashed_password: str
 
-
+##React랑 연결하려고 만든 스키마마
+class LoginInput(BaseModel):
+    id: str
+    pwd: str
 
