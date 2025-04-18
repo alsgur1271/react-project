@@ -130,5 +130,49 @@ router.put('/accessibility', auth, async (req, res) => {
     res.status(500).json({ message: '서버 오류' });
   }
 });
+// 선생님의 학생 목록 가져오기
+router.get('/teacher/students', auth, async (req, res) => {
+  try {
+    // 선생님 권한 확인
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+    
+    // teacher_students 테이블에서 선생님에게 할당된 학생 가져오기
+    const [rows] = await db.query(
+      'SELECT u.id, u.username, u.email FROM users u ' +
+      'JOIN teacher_students ts ON u.id = ts.student_id ' +
+      'WHERE ts.teacher_id = ? AND u.role = "student" AND verified = 1 ' +
+      'ORDER BY u.username',
+      [req.user.id]
+    );
+    
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('학생 목록 조회 오류:', error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
 
+// 모든 학생 목록 가져오기 (선생님용)
+router.get('/students', auth, async (req, res) => {
+  try {
+    // 선생님 권한 확인
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+    
+    // 모든 학생 목록 가져오기
+    const [rows] = await db.query(
+      'SELECT id, username, email FROM users ' +
+      'WHERE role = "student" AND email_verified = 1 ' +
+      'ORDER BY username'
+    );
+    
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('학생 목록 조회 오류:', error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
 module.exports = router;

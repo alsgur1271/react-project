@@ -263,4 +263,53 @@ router.post('/:id/end', auth, async (req, res) => {
   }
 });
 
+router.get('/active', auth, async (req, res) => {
+  try {
+    const now = new Date();
+    
+    if (req.user.role === 'student') {
+      // 학생인 경우 참여 중인 활성화된 세션 가져오기
+      const [rows] = await db.query(
+        'SELECT s.*, u.username as teacher_name ' +
+        'FROM sessions s ' +
+        'JOIN users u ON s.teacher_id = u.id ' +
+        'JOIN session_participants sp ON s.id = sp.session_id ' +
+        'WHERE sp.user_id = ? AND s.status = "active" ' +
+        'AND s.scheduled_start <= ? AND s.scheduled_end >= ? ' +
+        'LIMIT 1',
+        [req.user.id, now, now]
+      );
+      
+      if (rows.length === 0) {
+        return res.status(404).json({ message: '활성화된 세션이 없습니다.' });
+      }
+      
+      res.status(200).json(rows[0]);
+    } else if (req.user.role === 'teacher') {
+      // 선생님인 경우 자신이 생성한 활성화된 세션 가져오기
+      const [rows] = await db.query(
+        'SELECT s.*, ' +
+        '(SELECT COUNT(*) FROM session_participants WHERE session_id = s.id) as student_count ' +
+        'FROM sessions s ' +
+        'WHERE s.teacher_id = ? AND s.status = "active" ' +
+        'AND s.scheduled_start <= ? AND s.scheduled_end >= ? ' +
+        'LIMIT 1',
+        [req.user.id, now, now]
+      );
+      
+      if (rows.length === 0) {
+        return res.status(404).json({ message: '활성화된 세션이 없습니다.' });
+      }
+      
+      res.status(200).json(rows[0]);
+    } else {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+  } catch (error) {
+    console.error('활성화된 세션 조회 오류:', error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+
 module.exports = router;
