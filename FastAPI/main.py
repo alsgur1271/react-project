@@ -4,15 +4,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from routes import blog, auth, signalling
+from routes import blog, auth, user
 from utils.common import lifespan
 from utils import exc_handler, middleware
 from dotenv import load_dotenv
 import os
+from signaling.sio_server import sio  # signaling 모듈에서 socketio 가져옴
+from socketio import ASGIApp
 
 app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/ws", ASGIApp(sio, app))
 
 #미들웨어 추가함수
 app.add_middleware(CORSMiddleware, 
@@ -33,7 +36,6 @@ app.add_middleware(middleware.MethodOverrideMiddlware)
 
 app.include_router(blog.router)
 app.include_router(auth.router)
-app.include_router(signalling.router) #signalling 서버버
-
-app.add_exception_handler(StarletteHTTPException, exc_handler.custom_http_exception_handler)
+app.include_router(user.router)
+# app.add_exception_handler(StarletteHTTPException, exc_handler.custom_http_exception_handler)
 app.add_exception_handler(RequestValidationError, exc_handler.validation_exception_handler)

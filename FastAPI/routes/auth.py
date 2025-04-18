@@ -9,7 +9,8 @@ from sqlalchemy import Connection
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
-from schemas.auth_schema import LoginInput
+from schemas.auth_schema import LoginInput, RegisterRequest
+from fastapi import Body
 
 
 
@@ -27,12 +28,13 @@ def get_hashed_password(password: str):
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
+#React용으로 수정완완
 @router.post("/login")
 async def login(request: Request,
                 login_input: LoginInput,
                 conn: Connection = Depends(context_get_conn)):
     
-    userpass = await auth_svc.get_user_by_id(conn=conn, user_id=login_input.username)
+    userpass = await auth_svc.get_user_by_id(conn=conn, username=login_input.username)
     if userpass is None:
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -40,8 +42,8 @@ async def login(request: Request,
         )
 
     is_correct_pw = verify_password(
-        plain_password=login_input.pwd,
-        hashed_password=userpass.hashed_password
+        plain_password=login_input.password,
+        hashed_password=userpass.password
     )
     if not is_correct_pw:
         return JSONResponse(
@@ -51,54 +53,76 @@ async def login(request: Request,
 
     request.session["session_user"] = {
         "id": userpass.id,
-        "name": userpass.name
+        "name": userpass.username
     }
+
+    print("로그인 성공! 세션값:", request.session)
 
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={"success": True, "message": "로그인 성공", "user": request.session["session_user"]}
     )
 
+#React용으로 수정완
+@router.post("/register")
+async def register_user_api(
+    register_input: RegisterRequest,
+    conn: Connection = Depends(context_get_conn)
+):
+    user = await auth_svc.get_user_by_email(conn=conn, email=register_input.email)
+    if user:
+        raise HTTPException(status_code=400, detail="이미 등록된 이메일입니다.")
 
-
-
-
-
-
-@router.get("/register")
-async def register_user_ui(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="register_user.html",
-        context={}
+    hashed_password = get_hashed_password(register_input.password)
+    await auth_svc.register_user(
+        conn=conn,
+        name=register_input.username,
+        email=register_input.email,
+        hashed_password=hashed_password,
+        role=register_input.role
     )
 
-@router.post("/register")
-async def register_user(name: str = Form(min_length=2, max_length=100),
-                        email: EmailStr = Form(...),
-                        password: str = Form(min_length=2, max_length=30),
-                        conn: Connection = Depends(context_get_conn)):
+    return JSONResponse(status_code=200, content={"message": "회원가입 성공!"})
+
+
+
+
+
+
+# @router.get("/register")
+# async def register_user_ui(request: Request):
+#     return templates.TemplateResponse(
+#         request=request,
+#         name="register_user.html",
+#         context={}
+#     )
+
+# @router.post("/register")
+# async def register_user(name: str = Form(min_length=2, max_length=100),
+#                         email: EmailStr = Form(...),
+#                         password: str = Form(min_length=2, max_length=30),
+#                         conn: Connection = Depends(context_get_conn)):
     
-    user = await auth_svc.get_user_by_email(conn=conn, email=email)
-    if user is not None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="해당 Email은 이미 등록되어 있습니다. ")
+#     user = await auth_svc.get_user_by_email(conn=conn, email=email)
+#     if user is not None:
+#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+#                             detail="해당 Email은 이미 등록되어 있습니다. ")
     
-    hashed_password = get_hashed_password(password)
-    await auth_svc.register_user(conn=conn, name=name, email=email, 
-                           hashed_password=hashed_password)
+#     hashed_password = get_hashed_password(password)
+#     await auth_svc.register_user(conn=conn, name=name, email=email, 
+#                            hashed_password=hashed_password)
     
-    return RedirectResponse("/blogs", status_code=status.HTTP_302_FOUND)
+#     return RedirectResponse("/blogs", status_code=status.HTTP_302_FOUND)
     
     # auth_svc.register_user_...(conn=conn, name=name, email=email, password=password)
 
-@router.get("/login")
-async def login_ui(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="login.html",
-        context={}
-    )
+# @router.get("/login")
+# async def login_ui(request: Request):
+#     return templates.TemplateResponse(
+#         request=request,
+#         name="login.html",
+#         context={}
+#     )
 
 # @router.post("/login")
 # async def login(request: Request,

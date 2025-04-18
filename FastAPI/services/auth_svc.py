@@ -13,26 +13,41 @@ import time
  
 
 #React용 및 DB연결에 맞게 SQLALchemy방식으로 변경함
-async def get_user_by_id(conn, user_id: str):
-    query = text("SELECT * FROM users WHERE id = :user_id")
-    result = await conn.execute(query, {"user_id": user_id})
+async def get_user_by_id(conn, username: str):
+    query = text("SELECT * FROM users WHERE username = :username")
+    result = await conn.execute(query, {"username": username})
     row = result.mappings().first()  # dict처럼 접근 가능
-    return row
+    # return row
+    return UserDataPASS(**row)
 
-# async def get_user_by_id(conn, user_id: str):
-#     query = "SELECT * FROM users WHERE id = :user_id"
-#     return await conn.fetch_one(query, {"user_id": user_id})
+# async def get_user_by_id(conn, username: str):
+#     query = "SELECT * FROM users WHERE id = :username"
+#     return await conn.fetch_one(query, {"username": username})
 
 
-async def register_user(conn, user_id: str, hashed_password: str):
+async def register_user(conn, name: str, email: str, hashed_password: str, role: str):
     query = """
-    INSERT INTO users (id, hashed_password)
-    VALUES (:user_id, :hashed_password)
+    INSERT INTO users (username, email, password, role)
+    VALUES (:username, :email, :password, :role)
     """
-    await conn.execute(query, {
-        "user_id": user_id,
-        "hashed_password": hashed_password
-    })
+    stmt = text(query).bindparams(
+        username=name,
+        email=email,
+        password=hashed_password,
+        role=role
+    )
+    await conn.execute(stmt)
+    await conn.commit()
+
+# async def register_user(conn, username: str, hashed_password: str):
+#     query = """
+#     INSERT INTO users (id, hashed_password)
+#     VALUES (:username, :hashed_password)
+#     """
+#     await conn.execute(query, {
+#         "username": username,
+#         "hashed_password": hashed_password
+#     })
 
 
 
@@ -72,7 +87,7 @@ async def register_user(conn, user_id: str, hashed_password: str):
 async def get_user_by_email(conn: Connection, email: str) -> UserData:
     try:
         query = f"""
-        SELECT id, name, email from users
+        SELECT id, username, email from users
         where email = :email
         """
         stmt = text(query)
@@ -85,7 +100,8 @@ async def get_user_by_email(conn: Connection, email: str) -> UserData:
         row = result.fetchone()
         user = UserData(id=row[0], name=row[1], email=row[2])
         
-        result.close()
+        # result.close() #생략 가능. wait conn.execute니까
+
         return user
     
     except SQLAlchemyError as e:
@@ -127,21 +143,21 @@ async def get_userpass_by_email(conn: Connection, email: str) -> UserDataPASS:
                             detail="알수없는 이유로 서비스 오류가 발생하였습니다")
 
 
-async def register_user(conn: Connection, name: str, email:str, hashed_password: str):
-    try:
-        query = f"""
-        INSERT INTO users(name, email, hashed_password)
-        values ('{name}', '{email}', '{hashed_password}')        
-        """
-        print("query:", query)
-        await conn.execute(text(query))
-        await conn.commit()
+# async def register_user(conn: Connection, name: str, email:str, hashed_password: str):
+#     try:
+#         query = f"""
+#         INSERT INTO users(name, email, hashed_password)
+#         values ('{name}', '{email}', '{hashed_password}')        
+#         """
+#         print("query:", query)
+#         await conn.execute(text(query))
+#         await conn.commit()
         
-    except SQLAlchemyError as e:
-        print(e)
-        await conn.rollback()
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                            detail="요청하신 서비스가 잠시 내부적으로 문제가 발생하였습니다.")
+#     except SQLAlchemyError as e:
+#         print(e)
+#         await conn.rollback()
+#         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+#                             detail="요청하신 서비스가 잠시 내부적으로 문제가 발생하였습니다.")
     
 def get_session(request: Request):
     return request.session
