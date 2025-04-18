@@ -43,10 +43,10 @@ router.post('/register', async (req, res) => {
     // 이메일 인증 발송
     //await sendVerificationEmail(email, verificationToken);
     // 접근성 설정 생성
-    await db.query(
+    /*await db.query(
       'INSERT INTO accessibility_settings (username) VALUES (?)',
       [result.insertId]
-    );
+    );*/ //이부분 오류로 user테이블에 데이터 정상적으로 들어가도 서버오류뜨고 로그인페이지로 이동안됨됨
     
     res.status(201).json({ message: '회원가입 성공. 이메일을 확인하여 계정을 활성화해주세요.' });
   } catch (error) {

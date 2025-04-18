@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/auth';
 import VoiceRecognizer from '../../services/VoiceRecognizer';
@@ -7,12 +7,19 @@ import '../../styles/Auth.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    //id: '', 추가해야됨 username 변경할지 고민
     username: '',
     age: '',
     password: '',
     confirmPassword: '',
     teacherCode: '' 
   });
+
+  const idInputRef = useRef(null);
+  const pwInputRef = useRef(null);
+  const pw2InputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const ageInputRef = useRef(null);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -140,20 +147,35 @@ const Register = () => {
         {errors.server && <div className="auth-error">{errors.server}</div>}
         
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label htmlFor="username">사용자명</label>
+        {/*<div className="form-group">
+            <label htmlFor="username">아이디</label>
             <div className="id-input-row">
-            <input
+              <input
+              type="text"
+              id="id"
+              name="id"
+              value={formData.id}
+              onChange={handleChange}
+              ref={idInputRef}
+              required
+              />
+              {<button type="button" className="check-btn" onClick={checkIdUniqueness}>중복 확인</button>(아직 작동안됨)
+              {errors.id && <div className="field-error">{errors.id}</div>}
+            </div>
+          </div>*/}
+          
+          <div className="form-group">
+            <label htmlFor="username">이름</label>
+              <input
               type="text"
               id="username"
               name="username"
               value={formData.username}
               onChange={handleChange}
+              ref={nameInputRef}
               required
-            />
-            {/*<button type="button" className="check-btn" onClick={checkIdUniqueness}>중복 확인</button>*/}
-            {errors.username && <div className="field-error">{errors.username}</div>}
-          </div>
+              />
+              {errors.username && <div className="field-error">{errors.username}</div>}
           </div>
           
           <div className="form-group">
@@ -171,6 +193,7 @@ const Register = () => {
                    setFormData({ ...formData, age: value });
                 }
               }}
+              ref={ageInputRef}
               required
               />
           </div>
@@ -183,6 +206,7 @@ const Register = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              ref={pwInputRef}
               required
             />
             {errors.password && <div className="field-error">{errors.password}</div>}
@@ -196,6 +220,7 @@ const Register = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              ref={pw2InputRef}
               required
             />
             {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
