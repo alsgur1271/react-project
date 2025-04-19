@@ -13,12 +13,19 @@ import os
 from signaling.sio_server import sio  # signaling 모듈에서 socketio 가져옴
 from socketio import ASGIApp
 
+from fastapi import Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+import logging
+
 
 
 app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/ws", ASGIApp(sio, app))
+
+logging.basicConfig(level=logging.DEBUG) #디버깅용용
 
 #미들웨어 추가함수
 app.add_middleware(CORSMiddleware, 
@@ -41,6 +48,20 @@ app.include_router(blog.router)
 app.include_router(auth.router)
 app.include_router(user.router)
 # app.add_exception_handler(StarletteHTTPException, exc_handler.custom_http_exception_handler)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    print("⚠️ 요청 검증 실패!", exc.errors())
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "status_code": status.HTTP_422_UNPROCESSABLE_ENTITY,
+            "title_message": "입력값이 올바르지 않습니다.",
+            "detail": exc.errors()
+        }
+    )
+
 
 app.add_exception_handler(RequestValidationError, exc.validation_exception_handler)
 app.add_exception_handler(StarletteHTTPException, exc.custom_http_exception_handler)

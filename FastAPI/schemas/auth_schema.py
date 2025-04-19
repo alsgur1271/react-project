@@ -10,6 +10,8 @@ class UserData(BaseModel):
 
 class UserDataPASS(UserData):
     password: str
+    verified: int  # ✅ 추가
+    role: str            # ✅ 추가
 
     class Config:
         extra = "ignore"

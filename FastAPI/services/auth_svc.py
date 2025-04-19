@@ -18,6 +18,9 @@ async def get_user_by_id(conn, username: str):
     result = await conn.execute(query, {"username": username})
     row = result.mappings().first()  # dict처럼 접근 가능
     # return row
+    if row is None:
+        return None
+
     return UserDataPASS(**row)
 
 # async def get_user_by_id(conn, username: str):

@@ -11,14 +11,18 @@ from pydantic import EmailStr
 
 from schemas.auth_schema import LoginInput, RegisterRequest
 from fastapi import Body
+import logging
 
+#JWT토큰 생성용 라이브러리
+from jose import jwt
+from datetime import datetime, timedelta, timezone
 
-
+logger = logging.getLogger(__name__)
 
 # router 생성
 router = APIRouter(prefix="/auth", tags=["auth"])
-# jinja2 Template 엔진 생성
-templates = Jinja2Templates(directory="templates")
+# # jinja2 Template 엔진 생성
+# templates = Jinja2Templates(directory="templates")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -28,12 +32,24 @@ def get_hashed_password(password: str):
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
-#React용으로 수정완완
+#JWT토큰 생성 코드드
+SECRET_KEY = "your_super_secret_key"
+ALGORITHM = "HS256"
+
+def create_token(data: dict, expires_delta: timedelta = timedelta(hours=1)):
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + expires_delta
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+#React 로그인
 @router.post("/login")
 async def login(request: Request,
                 login_input: LoginInput,
                 conn: Connection = Depends(context_get_conn)):
-    
+
     userpass = await auth_svc.get_user_by_id(conn=conn, username=login_input.username)
     if userpass is None:
         return JSONResponse(
@@ -51,17 +67,57 @@ async def login(request: Request,
             content={"success": False, "message": "비밀번호가 일치하지 않습니다."}
         )
 
-    request.session["session_user"] = {
-        "id": userpass.id,
-        "name": userpass.username
-    }
-
-    print("로그인 성공! 세션값:", request.session)
+    token = create_token({"sub": userpass.id, "username": userpass.username})
 
     return JSONResponse(
         status_code=status.HTTP_200_OK,
-        content={"success": True, "message": "로그인 성공", "user": request.session["session_user"]}
+        content={
+            "token": token,
+            "user": {
+                "id": userpass.id,
+                "name": userpass.username,
+                "email_verified": userpass.verified,
+                "role": userpass.role
+            }
+        }
     )
+
+# @router.post("/login")
+# async def login(request: Request,
+#                 login_input: LoginInput,
+#                 conn: Connection = Depends(context_get_conn)):
+    
+
+#     userpass = await auth_svc.get_user_by_id(conn=conn, username=login_input.username)
+#     if userpass is None:
+#         return JSONResponse(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             content={"success": False, "message": "해당 ID 사용자는 존재하지 않습니다."}
+#         )
+
+#     is_correct_pw = verify_password(
+#         plain_password=login_input.password,
+#         hashed_password=userpass.password
+#     )
+#     if not is_correct_pw:
+#         return JSONResponse(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             content={"success": False, "message": "비밀번호가 일치하지 않습니다."}
+#         )
+    
+#     #JWT토큰생성
+#     token = create_token({"sub": userpass.id, "username": userpass.username})
+#     print("✅ 생성된 토큰:", token)
+
+#     request.session["session_user"] = {
+#         "id": userpass.id,
+#         "name": userpass.username
+#     }
+
+#     return JSONResponse(
+#         status_code=status.HTTP_200_OK,
+#         content={"success": True, "message": "로그인 성공", "user": request.session["session_user"], "token": token }
+#     )
 
 #React용으로 수정완
 @router.post("/register")
@@ -69,6 +125,7 @@ async def register_user_api(
     register_input: RegisterRequest,
     conn: Connection = Depends(context_get_conn)
 ):
+
     user = await auth_svc.get_user_by_email(conn=conn, email=register_input.email)
     if user:
         raise HTTPException(status_code=400, detail="이미 등록된 이메일입니다.")
@@ -81,6 +138,7 @@ async def register_user_api(
         hashed_password=hashed_password,
         role=register_input.role
     )
+    
 
     return JSONResponse(status_code=200, content={"message": "회원가입 성공!"})
 

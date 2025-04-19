@@ -46,35 +46,35 @@ async def register_user(user: UserRegisterRequest,
 
     return {"message": "회원가입 성공!"}
 
-@router.post("/login")
-async def login(request: Request,
-                data: LoginInput,
-                conn = Depends(context_get_conn)):
-    user_id = data.id
-    password = data.password
+# @router.post("/login")
+# async def login(request: Request,
+#                 data: LoginInput,
+#                 conn = Depends(context_get_conn)):
+#     user_id = data.id
+#     password = data.password
 
-    # 아이디로 사용자 조회
-    userpass = await auth_svc.get_user_by_id(conn=conn, user_id=user_id)
-    if userpass is None:
-        raise HTTPException(status_code=401, detail="존재하지 않는 사용자입니다.")
+#     # 아이디로 사용자 조회
+#     userpass = await auth_svc.get_user_by_id(conn=conn, user_id=user_id)
+#     if userpass is None:
+#         raise HTTPException(status_code=401, detail="존재하지 않는 사용자입니다.")
 
-    # 비밀번호 확인
-    if not verify_password(password, userpass.hashed_password):
-        raise HTTPException(status_code=401, detail="비밀번호가 일치하지 않습니다.")
+#     # 비밀번호 확인
+#     if not verify_password(password, userpass.hashed_password):
+#         raise HTTPException(status_code=401, detail="비밀번호가 일치하지 않습니다.")
 
-    # 세션에 사용자 정보 저장
-    request.session["session_user"] = {
-        "id": userpass.id,
-        "name": userpass.name  # name이 없다면 그냥 id만 넣어도 됨
-    }
+#     # 세션에 사용자 정보 저장
+#     request.session["session_user"] = {
+#         "id": userpass.id,
+#         "name": userpass.name  # name이 없다면 그냥 id만 넣어도 됨
+#     }
 
-    return JSONResponse(status_code=200, content={
-        "message": "로그인 성공",
-        "user": {
-            "id": userpass.id,
-            "name": userpass.name
-        }
-    })
+#     return JSONResponse(status_code=200, content={
+#         "message": "로그인 성공",
+#         "user": {
+#             "id": userpass.id,
+#             "name": userpass.name
+#         }
+#     })
 
 @router.get("/logout")
 async def logout(request: Request):
