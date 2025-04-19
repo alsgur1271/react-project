@@ -6,11 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from routes import blog, auth, user
 from utils.common import lifespan
-from utils import exc_handler, middleware
+from utils import exc_handler as exc # middleware
+from jose import JWTError
 from dotenv import load_dotenv
 import os
 from signaling.sio_server import sio  # signaling 모듈에서 socketio 가져옴
 from socketio import ASGIApp
+
+
 
 app = FastAPI(lifespan=lifespan)
 
@@ -32,10 +35,14 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # signed cookie 적용. 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY, max_age=3600)
 
-app.add_middleware(middleware.MethodOverrideMiddlware)
+# app.add_middleware(middleware.MethodOverrideMiddlware)
 
 app.include_router(blog.router)
 app.include_router(auth.router)
 app.include_router(user.router)
 # app.add_exception_handler(StarletteHTTPException, exc_handler.custom_http_exception_handler)
-app.add_exception_handler(RequestValidationError, exc_handler.validation_exception_handler)
+
+app.add_exception_handler(RequestValidationError, exc.validation_exception_handler)
+app.add_exception_handler(StarletteHTTPException, exc.custom_http_exception_handler)
+app.add_exception_handler(JWTError, exc.jwt_exception_handler)
+app.add_exception_handler(exc.CustomPermissionDenied, exc.custom_permission_handler)

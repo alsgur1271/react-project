@@ -1,0 +1,47 @@
+<!-- test.html -->
+<!DOCTYPE html>
+<html>
+<head><title>WebRTC Signaling Test</title></head>
+<body>
+  <input id="myId" placeholder="내 ID">
+  <input id="targetId" placeholder="상대 ID">
+  <button onclick="connect()">연결</button>
+  <button onclick="sendOffer()">Offer 보내기</button>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    let socket;
+
+    function connect() {
+      const myId = document.getElementById('myId').value;
+      socket = io("http://localhost:8000/ws", {
+        auth: { token: "test-token" }
+      });
+
+      socket.on("connect", () => {
+        console.log("[연결 성공]", socket.id);
+        socket.emit("authenticate", "test-token");
+      });
+
+      socket.on("offer", (data) => {
+        console.log("[OFFER 수신]", data);
+      });
+
+      socket.on("answer", (data) => {
+        console.log("[ANSWER 수신]", data);
+      });
+
+      socket.on("candidate", (data) => {
+        console.log("[CANDIDATE 수신]", data);
+      });
+    }
+
+    function sendOffer() {
+      const targetId = document.getElementById('targetId').value;
+      socket.emit("offer", {
+        target: targetId,
+        payload: { sdp: "test-offer-sdp", type: "offer" }
+      });
+    }
+  </script>
+</body>
+</html>
