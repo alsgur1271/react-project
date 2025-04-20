@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { fetchUpcomingSessions, fetchActiveSession } from '../../services/api';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 
 const StudentDashboard = () => {
@@ -193,6 +194,7 @@ const StudentDashboard = () => {
           </section>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

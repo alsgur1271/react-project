@@ -10,6 +10,7 @@ import {
 } from '../../services/api';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 import '../../styles/CreateSession.css';
 
@@ -266,6 +267,7 @@ const EditSession = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

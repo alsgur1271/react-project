@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { fetchAllTeachers, fetchAllStudents, fetchTeacherStudents, assignStudentsToTeacher } from '../../services/api';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 import '../../styles/AdminDashboard.css';
 
@@ -254,6 +255,7 @@ const AdminDashboard = () => {
           </section>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

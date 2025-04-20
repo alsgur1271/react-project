@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 import '../../styles/TeacherJoinRoom.css';
 
@@ -95,6 +96,7 @@ const TeacherJoinRoom = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { createSession, fetchMyStudents, fetchStudentList } from '../../services/api';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 import '../../styles/CreateSession.css';
 
@@ -327,6 +328,7 @@ const CreateSession = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

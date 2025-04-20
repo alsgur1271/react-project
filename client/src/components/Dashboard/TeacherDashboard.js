@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { fetchTeacherSessions, startSession, deleteSession } from '../../services/api';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import Footer from '../Layout/Footer'
 import '../../styles/Dashboard.css';
 
 const TeacherDashboard = () => {
@@ -89,7 +90,6 @@ const handleEditSession = (sessionId) => {
 };
 
 // 수업 삭제 핸들러
-// src/components/Dashboard/TeacherDashboard.js - 삭제 핸들러 수정
 const handleDeleteSession = async (sessionId) => {
   // 활성 상태 확인
   const session = sessions.find(s => s.id === sessionId);
@@ -277,6 +277,7 @@ const handleDeleteSession = async (sessionId) => {
           </section>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };
