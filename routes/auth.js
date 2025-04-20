@@ -7,43 +7,45 @@ const { sendVerificationEmail } = require('../utils/emailService');
 const db = require('../config/database');
 
 // 회원가입
-router.post('/register', async (req, res) => {
+
+router.post('/register', async (req, res) => {  
   try {
     const { username, email, password, role } = req.body;
     
-    // 이미 존재하는 사용자 확인
+    // 필수 필드 검증
+    if (!username || !email || !password || !role) {
+      return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
+    }
+    
+    // 기존 사용자 확인
     const [existingUsers] = await db.query(
       'SELECT * FROM users WHERE username = ? OR email = ?',
       [username, email]
     );
     
     if (existingUsers.length > 0) {
-      return res.status(400).json({ message: '이미 존재하는 사용자명 또는 이메일입니다.' });
+      return res.status(400).json({ message: '이미 사용 중인 사용자명 또는 이메일입니다.' });
     }
     
     // 비밀번호 해싱
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
     
-    // 인증 토큰 생성
+    // 이메일 인증 토큰 생성
     const verificationToken = crypto.randomBytes(32).toString('hex');
     
-    // 사용자 저장
+    // 사용자 추가
     const [result] = await db.query(
       'INSERT INTO users (username, email, password, role, verification_token) VALUES (?, ?, ?, ?, ?)',
       [username, email, hashedPassword, role, verificationToken]
     );
     
-    // 이메일 인증 발송
+    // 인증 이메일 발송
     await sendVerificationEmail(email, verificationToken);
     
-    // 접근성 설정 생성
-    await db.query(
-      'INSERT INTO accessibility_settings (user_id) VALUES (?)',
-      [result.insertId]
-    );
-    
-    res.status(201).json({ message: '회원가입 성공. 이메일을 확인하여 계정을 활성화해주세요.' });
+    res.status(201).json({
+      message: '회원가입에 성공하였습니다. 이메일을 확인하여 계정을 인증해주세요.',
+      userId: result.insertId
+    });
   } catch (error) {
     console.error('회원가입 오류:', error);
     res.status(500).json({ message: '서버 오류' });
@@ -134,5 +136,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: '서버 오류' });
   }
 });
+
+
 
 module.exports = router;

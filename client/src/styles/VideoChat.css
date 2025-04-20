@@ -1,0 +1,440 @@
+.video-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #121212;
+    color: white;
+  }
+  
+  .video-chat-header {
+    padding: 15px 20px;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .video-chat-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .connection-status {
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+  
+  .session-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+  
+  .video-view-controls {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    background-color: #1e1e1e;
+  }
+  
+  .video-view-controls button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    background-color: transparent;
+    color: #aaa;
+    border: 1px solid #444;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .video-view-controls button.active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+  }
+  
+  .video-container {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    overflow: auto;
+  }
+  
+  .video-container.grid-view {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .video-container.focus-view {
+    flex-direction: column;
+  }
+  
+  .main-video {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .main-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #2a2a2a;
+  }
+  
+  .remote-label, .local-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .local-video-container {
+    position: relative;
+    width: 30%;
+    max-width: 300px;
+    align-self: flex-end;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .local-video-container video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    background-color: #2a2a2a;
+  }
+  
+  .teacher-video-container {
+    width: 30%;
+    max-width: 300px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 20px;
+  }
+  
+  .teacher-video-container video {
+    width: 100%;
+    height: auto;
+    background-color: #2a2a2a;
+  }
+  
+  .video-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .student-videos {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    align-content: flex-start;
+  }
+  
+  .student-video-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+  }
+  
+  .student-video {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .student-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #2a2a2a;
+  }
+  
+  .student-name {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .video-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #2a2a2a;
+    color: #aaa;
+  }
+  
+  .video-controls {
+    padding: 15px 20px;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .leave-btn {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .waiting-message {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    padding: 20px;
+  }
+  
+  /* 반응형 설계 */
+  @media (max-width: 768px) {
+    .video-container {
+      flex-direction: column;
+    }
+    
+    .local-video-container,
+    .teacher-video-container {
+      width: 100%;
+      max-width: none;
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+    
+    .student-videos {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
+
+  /* 기존 VideoChat.css에 다음 스타일 추가 또는 수정 */
+
+.video-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #121212;
+  color: white;
+}
+
+.video-chat-header {
+  padding: 15px 20px;
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.video-chat-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.connection-status {
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.session-info {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  color: #aaa;
+  align-items: center;
+}
+
+.video-container {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: auto;
+}
+
+.main-video {
+  flex: 1;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #2a2a2a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 16/9;
+  max-height: calc(100vh - 300px);
+}
+
+.main-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.local-video-container, .teacher-video-container {
+  width: 30%;
+  max-width: 300px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-self: flex-end;
+  aspect-ratio: 16/9;
+}
+
+.local-video, .teacher-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #2a2a2a;
+}
+
+.remote-label, .local-label {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.video-controls {
+  padding: 15px 20px;
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: center;
+}
+
+.leave-btn {
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.waiting-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #aaa;
+  padding: 20px;
+}
+
+.waiting-message p {
+  margin: 5px 0;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .video-container {
+    flex-direction: column;
+  }
+  
+  .local-video-container, .teacher-video-container {
+    width: 40%;
+    max-width: none;
+  }
+}
+
+/* VideoChat.css에 추가 */
+
+.reconnect-btn {
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.reconnect-btn:hover {
+  background-color: #1976D2;
+}
+
+.reconnect-btn:disabled {
+  background-color: #90CAF9;
+  cursor: not-allowed;
+}
+/* VideoChat.css에 추가 */
+
+.video-controls {
+  padding: 15px 20px;
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.restart-btn {
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.restart-btn:hover {
+  background-color: #1976D2;
+}
+
+.leave-btn {
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.leave-btn:hover {
+  background-color: #d32f2f;
+}

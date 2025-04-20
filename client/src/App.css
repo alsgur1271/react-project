@@ -1,0 +1,202 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* src/styles/App.css 에 추가 */
+
+/* 글꼴 크기 */
+:root.font-size-small {
+  --font-size-base: 14px;
+  --font-size-h1: 24px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-h4: 16px;
+}
+
+:root.font-size-medium {
+  --font-size-base: 16px;
+  --font-size-h1: 28px;
+  --font-size-h2: 24px;
+  --font-size-h3: 20px;
+  --font-size-h4: 18px;
+}
+
+:root.font-size-large {
+  --font-size-base: 18px;
+  --font-size-h1: 32px;
+  --font-size-h2: 28px;
+  --font-size-h3: 24px;
+  --font-size-h4: 20px;
+}
+
+body {
+  font-size: var(--font-size-base);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+/* 고대비 모드 */
+:root.high-contrast {
+  --bg-color: #000;
+  --text-color: #fff;
+  --heading-color: #fff;
+  --border-color: #fff;
+  --primary-color: #ffff00;
+  --secondary-color: #00ffff;
+  --error-color: #ff6666;
+  --success-color: #66ff66;
+}
+
+:root.high-contrast body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+:root.high-contrast .main-header,
+:root.high-contrast .dashboard-section,
+:root.high-contrast .auth-card,
+:root.high-contrast .session-card,
+:root.high-contrast .accessibility-menu {
+  background-color: #111;
+  color: white;
+  border: 1px solid var(--border-color);
+}
+
+:root.high-contrast h1,
+:root.high-contrast h2,
+:root.high-contrast h3,
+:root.high-contrast h4 {
+  color: var(--heading-color);
+}
+
+:root.high-contrast .btn-primary,
+:root.high-contrast .login-btn {
+  background-color: var(--primary-color);
+  color: black;
+}
+
+:root.high-contrast .nav-link,
+:root.high-contrast .header-logo {
+  color: var(--text-color);
+}
+
+:root.high-contrast input,
+:root.high-contrast textarea,
+:root.high-contrast select {
+  background-color: #000;
+  color: white;
+  border: 1px solid white;
+}
+
+:root.high-contrast .error-message {
+  background-color: #500;
+  color: white;
+}
+
+/* src/styles/App.css에 추가 */
+
+/* 스크린 리더 지원 */
+:root.screen-reader-support .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:root.screen-reader-support .visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+:root.screen-reader-support a:focus,
+:root.screen-reader-support button:focus,
+:root.screen-reader-support input:focus,
+:root.screen-reader-support textarea:focus,
+:root.screen-reader-support select:focus {
+  outline: 3px solid #4caf50;
+  outline-offset: 2px;
+}
+
+/* 글꼴 크기 직접 설정 */
+body {
+  font-size: var(--font-size-base, 16px);
+}
+
+h1 {
+  font-size: var(--font-size-h1, 28px);
+}
+
+h2 {
+  font-size: var(--font-size-h2, 24px);
+}
+
+h3 {
+  font-size: var(--font-size-h3, 20px);
+}
+
+h4 {
+  font-size: var(--font-size-h4, 18px);
+}
+
+button, input, select, textarea {
+  font-size: inherit;
+}

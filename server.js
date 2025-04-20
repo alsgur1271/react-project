@@ -10,7 +10,7 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const sessionRoutes = require('./routes/sessions');
-
+const adminRoutes = require('./routes/admin');
 // 데이터베이스 연결
 const db = require('./config/database');
 
@@ -25,19 +25,27 @@ const io = socketIO(server, {
   }
 });
 
+//cors 설정
+app.use(cors({
+  origin: "http://localhost:3000", // React 앱의 주소
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  //maxAge : 86400// preflight 캐시 시간 -1일
+})
+);
+
 // 미들웨어
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//cors 설정
-app.use(cors({
-    origin: "http://localhost:3000", // React 앱의 주소
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
+//admin route
+app.use('/api/admin', adminRoutes);
+
+
+
+
 
 
 // API 라우트
@@ -52,6 +60,8 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
+
+
 
 // WebRTC 시그널링 설정
 require('./signaling')(io);
