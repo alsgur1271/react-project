@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { AccessibilityContext } from '../../contexts/AccessibilityContext';
 import logo from '../../assets/logo.svg';
-import './Header.css';
+import '../../styles/Header.css';
+
 
 const Header = () => {
   const { authState, logout } = useContext(AuthContext);

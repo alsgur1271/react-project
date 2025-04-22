@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Footer.css'; // 새 CSS 파일 생성
+import '../../styles/Footer.css';
+
 
 const Footer = () => {
   return (
