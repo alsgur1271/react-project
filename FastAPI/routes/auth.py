@@ -32,7 +32,7 @@ def get_hashed_password(password: str):
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
-#JWT토큰 생성 코드드
+#JWT토큰 생성 코드
 SECRET_KEY = "your_super_secret_key"
 ALGORITHM = "HS256"
 

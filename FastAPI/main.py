@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from routes import blog, auth, user, session  # session 라우터 추가
+from routes import auth, user, session  # session 라우터 추가
 from utils.common import lifespan
 from utils import exc_handler as exc # middleware
 from jose import JWTError
@@ -44,7 +44,6 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY, max_age=3600)
 
 # app.add_middleware(middleware.MethodOverrideMiddlware)
 
-app.include_router(blog.router)
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(session.router)  # 세션 라우터 추가
